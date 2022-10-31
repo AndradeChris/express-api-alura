@@ -1,7 +1,14 @@
 import express from "express";
+import db from "./config/dbConfig.js";
 
 const app = express();
 app.use(express.json());
+
+// Mongo Atlas start
+db.on("error", console.log.bind(console, "Erro de conexão!"))
+db.once("open", () => {
+    console.log("conexão com o banco feita com sucesso.")
+})
 
 const livros = [
     {id: 1, titulo: "Senhor dos Aneis"},
