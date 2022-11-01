@@ -1,5 +1,6 @@
 import express from "express";
 import db from "./config/dbConfig.js";
+import livros from "./models/Livro.js"
 
 const app = express();
 app.use(express.json());
@@ -10,10 +11,10 @@ db.once("open", () => {
     console.log("conexão com o banco feita com sucesso.")
 })
 
-const livros = [
-    {id: 1, titulo: "Senhor dos Aneis"},
-    {id: 2, titulo: "O Hobbit"}
-];
+// const livros = [
+//     {id: 1, titulo: "Senhor dos Aneis"},
+//     {id: 2, titulo: "O Hobbit"}
+// ];
 
 const buscaId = (id) => {
     const index = livros.findIndex(livro => livro.id == id)
@@ -26,8 +27,9 @@ app.get("/",(req, res) => {
 });
 
 app.get("/livros", (req, res) => {
-    res.status(200);
-    res.json(livros);
+    livros.find((err, livros) => {
+        res.status(200).json(livros); 
+    })
 });
 
 app.get("/livros/:id", (req, res) => {
