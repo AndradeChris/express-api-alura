@@ -1,8 +1,10 @@
 import express from "express";
 import db from "./config/dbConfig.js";
 import livros from "./models/Livro.js"
+import routes from "./routes/index.js";
 
 const app = express();
+routes(app)
 app.use(express.json());
 
 // Mongo Atlas start
@@ -21,16 +23,16 @@ const buscaId = (id) => {
     return index
 }
 
-app.get("/",(req, res) => {
-    res.status(200);
-    res.send('Pag de inicio');
-});
+// app.get("/",(req, res) => {
+//     res.status(200);
+//     res.send('Pag de inicio');
+// });
 
-app.get("/livros", (req, res) => {
-    livros.find((err, livros) => {
-        res.status(200).json(livros); 
-    })
-});
+// app.get("/livros", (req, res) => {
+//     livros.find((err, livros) => {
+//         res.status(200).json(livros); 
+//     })
+// });
 
 app.get("/livros/:id", (req, res) => {
     const index = buscaId(req.params.id);
