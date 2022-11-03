@@ -23,27 +23,10 @@ const buscaId = (id) => {
     return index
 }
 
-// app.get("/",(req, res) => {
-//     res.status(200);
-//     res.send('Pag de inicio');
-// });
-
-// app.get("/livros", (req, res) => {
-//     livros.find((err, livros) => {
-//         res.status(200).json(livros); 
-//     })
-// });
-
 app.get("/livros/:id", (req, res) => {
     const index = buscaId(req.params.id);
     res.status(200);
     res.json(livros[index])
-})
-
-app.post("/livros", (req, res) => {
-    livros.push((req.body));
-    res.status(201);
-    res.send("Livros cadastrado.");
 })
 
 app.put("/livros/:id", (req, res) => {
