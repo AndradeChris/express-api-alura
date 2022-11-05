@@ -2,27 +2,31 @@ import livros from "../models/Livro.js"
 
 class LivrosController {
     static listarLivros = (req, res) => {
-        livros.find((err, livros) => {
-            res.status(200).json(livros); 
-        })
+        livros.find()
+            .populate('autor')
+            .exec((err, livros) => {
+                res.status(200).json(livros);
+            })
     }
 
     static listarLivroId = (req, res) => {
         const id = req.params.id
-        livros.findById(id, (error, livro) => {
-            if (error) {
-                res.status(400).send({message: `${error} - não foi possível buscar o livro.`})
-            } else {
-                res.status(200).send(livro)
-            }
-    })
+        livros.findById(id)
+            .populate('autor')
+            .exec((error, livro) => {
+                if (error) {
+                    res.status(400).send({ message: `${error} - não foi possível buscar o livro.` })
+                } else {
+                    res.status(200).send(livro)
+                }
+            })
     }
 
     static cadastrarLivros = (req, res) => {
         const livro = new livros(req.body)
         livro.save((error) => {
             if (error) {
-                res.status(500).send({message: `${error} - não foi possível criar seu livro.`})
+                res.status(500).send({ message: `${error} - não foi possível criar seu livro.` })
             } else {
                 res.status(201).send(livro.toJSON())
             }
@@ -31,11 +35,11 @@ class LivrosController {
 
     static atualizarLivro = (req, res) => {
         const id = req.params.id
-        livros.findByIdAndUpdate(id, {$set: req.body}, (error) => {
+        livros.findByIdAndUpdate(id, { $set: req.body }, (error) => {
             if (error) {
-                res.status(500).send({message: `${error} - não foi atualizar o livro.`})
+                res.status(500).send({ message: `${error} - não foi atualizar o livro.` })
             } else {
-                res.status(200).send({message: `o livros foi atualizado com sucesso.`})
+                res.status(200).send({ message: `o livros foi atualizado com sucesso.` })
             }
         })
     }
@@ -44,9 +48,9 @@ class LivrosController {
         const id = req.params.id
         livros.findByIdAndDelete(id, (error) => {
             if (error) {
-                res.status(500).send({message: `${error} - não foi possível deletar o livro.`})
+                res.status(500).send({ message: `${error} - não foi possível deletar o livro.` })
             } else {
-                res.status(200).send({message: `o livros foi deletado com sucesso.`})
+                res.status(200).send({ message: `o livros foi deletado com sucesso.` })
             }
         })
     }
