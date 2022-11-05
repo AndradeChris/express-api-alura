@@ -9,6 +9,19 @@ class LivrosController {
             })
     }
 
+    static listarLivrosEditora = (req, res) => {
+        const editora = req.query.editora
+        livros.find({'editora': editora}, {})
+            .populate('autor')
+            .exec((error, livro) => {
+                if (error) {
+                    res.status(400).send({ message: `${error} - não foi possível buscar o livro.` })
+                } else {
+                    res.status(200).send(livro)
+                }
+            })
+    }
+
     static listarLivroId = (req, res) => {
         const id = req.params.id
         livros.findById(id)
